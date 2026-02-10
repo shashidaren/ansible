@@ -11,3 +11,25 @@
 - name: Ensure timezone is set
   timezone:
     name: Asia/Kuala_Lumpur
+
+
+- name: Install chrony
+  package:
+    name: chrony
+    state: present
+
+- name: Configure chrony
+  template:
+    src: chrony.conf.j2
+    dest: /etc/chrony.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart chronyd
+
+- name: Enable and start chronyd
+  service:
+    name: chronyd
+    state: started
+    enabled: true
+

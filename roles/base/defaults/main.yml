@@ -1,2 +1,10 @@
 ---
 base_user: ansible
+
+
+chrony_servers:
+  - 0.my.pool.ntp.org
+  - 1.my.pool.ntp.org
+  - 2.my.pool.ntp.org
+  - 3.my.pool.ntp.org
+
