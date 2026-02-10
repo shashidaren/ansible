@@ -1,0 +1,32 @@
+---
+- name: Install required packages
+  package:
+    name:
+      - dnf-plugins-core
+    state: present
+
+- name: Add Docker repo
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+
+- name: Install Docker
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: present
+
+- name: Enable and start Docker
+  service:
+    name: docker
+    state: started
+    enabled: true
+
+- name: Add ansible user to docker group
+  user:
+    name: "{{ base_user }}"
+    groups: docker
+    append: yes
+
