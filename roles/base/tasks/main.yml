@@ -1,0 +1,13 @@
+---
+- name: Ensure basic packages are installed
+  package:
+    name:
+      - vim
+      - curl
+      - wget
+      - git
+    state: present
+
+- name: Ensure timezone is set
+  timezone:
+    name: Asia/Kuala_Lumpur
