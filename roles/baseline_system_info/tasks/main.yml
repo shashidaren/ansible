@@ -1,0 +1,53 @@
+---
+- name: show hostname 
+  debug: 
+    msg: "{{ ansible_hostname }}"
+
+
+- name: Show OS version
+  debug:
+    msg: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
+
+
+- name: Show CPU information 
+  debug: 
+    msg: "CPU cores: {{ ansible_processor_vcpus }}" 
+
+- name: Show memory info
+  debug: 
+    msg: "Memory total MB: {{ ansible_memtotal_mb }}"
+
+- name: show disk usage 
+  command: df -h 
+  register: disk_usage
+  changed_when: false 
+
+- name: print disk usage 
+  debug: 
+    var: disk_usage.stdout_lines 
+
+- name: show uptime 
+  command: uptime -p 
+  register: uptime_result 
+  changed_when: false 
+
+- name: Print uptime 
+  debug: 
+    var: uptime_result.stdout
+
+- name: Print SELINUX mode
+  debug:
+    msg: "SELinux mode: {{ ansible_selinux.status }}" 
+
+- name: Check firewall service state
+  ansible.builtin.service_facts:
+
+- name: Show firewall state
+  debug:
+    msg: >-
+      Firewalld is {{
+        'running'
+        if 'firewalld.service' in ansible_facts.services
+        and ansible_facts.services['firewalld.service'].state == 'running'
+        else 'not running or not installed'
+      }}

@@ -1,0 +1,5 @@
+- name: Collect system baseline info
+  hosts: all
+  become: true
+  roles:
+    - baseline_system_info
