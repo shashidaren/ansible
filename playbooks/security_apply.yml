@@ -1,0 +1,5 @@
+- name: Apply security updates
+  hosts: all
+  become: true
+  roles:
+    - security_updates_apply

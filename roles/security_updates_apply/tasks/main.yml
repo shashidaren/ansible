@@ -1,0 +1,22 @@
+---
+- name: Apply security updates on RHEL systems
+  ansible.builtin.dnf:
+    name: "*"
+    security: yes
+    state: latest
+  register: update_result
+  when: ansible_os_family == "RedHat"
+
+- name: Check if reboot is required
+  ansible.builtin.command: needs-restarting -r
+  register: reboot_check
+  failed_when: false
+  changed_when: false
+  when: ansible_os_family == "RedHat"
+
+- name: Reboot system if required
+  ansible.builtin.reboot:
+    msg: "Reboot triggered by Ansible after security updates"
+    pre_reboot_delay: 5
+  when:
+    - reboot_check.rc != 0
