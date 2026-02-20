@@ -1,0 +1,2 @@
+report_output: true
+report_path: "/tmp/security_update_report.txt"
