@@ -1,0 +1,5 @@
+- name: Security Update Audit
+  hosts: all
+  become: true
+  roles:
+    - security_updates_audit

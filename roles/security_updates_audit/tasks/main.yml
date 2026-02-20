@@ -1,0 +1,35 @@
+- name: Gather package facts
+  package_facts:
+    manager: auto
+
+- name: Check security updates (RHEL family)
+  shell: dnf updateinfo list security || yum updateinfo list security
+  register: security_updates_rhel
+  changed_when: false
+  when: ansible_os_family == "RedHat"
+
+- name: Check security updates (Debian family)
+  shell: apt-get -s upgrade | grep -i security || true
+  register: security_updates_debian
+  changed_when: false
+  when: ansible_os_family == "Debian"
+
+- name: Set report for RHEL
+  set_fact:
+    security_report: "{{ security_updates_rhel.stdout }}"
+  when: ansible_os_family == "RedHat"
+
+- name: Set report for Debian
+  set_fact:
+    security_report: "{{ security_updates_debian.stdout }}"
+  when: ansible_os_family == "Debian"
+
+- name: Print report
+  debug:
+    var: security_report
+
+- name: Save report to file
+  copy:
+    content: "{{ security_report | default('No updates found') }}"
+    dest: "{{ report_path }}"
+  when: report_output
