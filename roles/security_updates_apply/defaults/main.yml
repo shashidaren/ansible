@@ -1,0 +1,3 @@
+---
+apply_reboot_if_kernel_updated: true
+
